@@ -43,7 +43,7 @@ router.post('/tareas', (req, res) => {
 })
 
 // actualizar tarea
-router.put('/tareas/:id', (req, res) => {
+router.patch('/tareas/:id', (req, res) => {
   const { id } = req.params
   const { name, descripcion } = req.body
   tareaSchema
