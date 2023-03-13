@@ -54,7 +54,7 @@ router.patch('/tareas/:id', (req, res) => {
   console.log({ id })
 })
 // actualizar estado
-router.patch('/tareas/:id', (req, res) => {
+router.patch('/tareas/:id/estado', (req, res) => {
   const { id } = req.params
   const { statusTarea } = req.body
   tareaSchema
