@@ -9,7 +9,17 @@ const bodyParser = require('body-parser')
 const app = express()
 
 const cors = require('cors')
-app.use(cors({ origin: '*' }))
+const allowedOrigins = ['https://crudlistatareas.netlify.app/api/tareas'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+}));
 app.use(express.json())
 app.use(bodyParser.json())
 
