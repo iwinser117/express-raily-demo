@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const routes = require('./routes/routes')
 const express = require('express')
+import { rateLimit } from 'express-rate-limit'
 const port = process.env.PORT || 3000
 require('dotenv').config()
 
@@ -20,6 +21,14 @@ app.use(cors({
     }
   },
 }));
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, 
+	limit: 50,
+	standardHeaders: 'draft-7', 
+	legacyHeaders: false, 
+  message: 'Demasiadas solicitudes desde esta IP, intenta nuevamente en 15 minutos.',
+})
+app.use(limiter)
 app.use(express.json())
 app.use(bodyParser.json())
 
