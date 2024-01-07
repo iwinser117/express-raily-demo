@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 const app = express()
 
 const cors = require('cors')
-const allowedOrigins = ['https://crudlistatareas.netlify.app/api/tareas'];
+const allowedOrigins = ['https://crudlistatareas.netlify.app/api/tareas', 'https://express-raily-demo-production.up.railway.app/api/tareas'];
 
 app.use(cors({
   origin: function (origin, callback) {
