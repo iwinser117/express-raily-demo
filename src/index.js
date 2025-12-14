@@ -37,7 +37,47 @@ mongoose.set('strictQuery', false)
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log('conectado a mongodb'))
-  .catch((e) => console.log('error de conexión', e))
-app.listen(port, () => {
-  console.log('escuchando efectivamente' + port)
+  .catch((e) => {
+    console.error('error de conexión a MongoDB:', e.message)
+    process.exit(1)
+  })
+
+// Middleware de manejo de errores global
+app.use((err, req, res, next) => {
+  console.error('Error no manejado:', err)
+  
+  const status = err.status || 500
+  const message = err.message || 'Error interno del servidor'
+  
+  res.status(status).json({
+    success: false,
+    status: status,
+    message: message,
+    timestamp: new Date().toISOString()
+  })
+})
+
+// Manejo de rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    status: 404,
+    message: 'Ruta no encontrada',
+    timestamp: new Date().toISOString()
+  })
+})
+
+const server = app.listen(port, () => {
+  console.log(`Servidor escuchando en puerto ${port}`)
+})
+
+// Manejo de errores no capturados
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Promesa rechazada no manejada:', reason)
+  process.exit(1)
+})
+
+process.on('uncaughtException', (error) => {
+  console.error('Excepción no capturada:', error)
+  process.exit(1)
 })
