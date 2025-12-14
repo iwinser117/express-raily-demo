@@ -12,11 +12,7 @@ const isValidMongoId = (id) => mongoose.Types.ObjectId.isValid(id)
 router.get('/tareas', async (req, res, next) => {
   try {
     const data = await tareaSchema.find()
-    res.status(200).json({
-      success: true,
-      data: data,
-      count: data.length
-    })
+    res.status(200).json(data)
   } catch (error) {
     console.error('Error al obtener tareas:', error.message)
     res.status(500).json({
@@ -47,10 +43,7 @@ router.get('/tareas/:id', async (req, res, next) => {
       })
     }
     
-    res.status(200).json({
-      success: true,
-      data: data
-    })
+    res.status(200).json(data)
   } catch (error) {
     console.error('Error al obtener tarea:', error.message)
     res.status(500).json({
